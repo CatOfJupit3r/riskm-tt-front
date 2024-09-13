@@ -6,11 +6,9 @@
             "dom.iterable",
             "esnext"
         ],
-        "baseUrl" : ".",
+        "baseUrl" : "./src",
         "paths" : {
-            "@components/*" : [
-                "./components/*"
-            ],
+            "@components/*": ["./components/*"],
             "@pages/*" : [
                 "./pages/*"
             ],
@@ -23,9 +21,15 @@
             "@models/*" : [
                 "./models/*"
             ],
+            "@pages": [
+                "./pages"
+            ],
             "config" : [
                 "./config"
-            ]
+            ],
+            "@context/*" : [
+                "./context/*"
+            ],
         },
         "allowJs" : true,
         "skipLibCheck" : true,
