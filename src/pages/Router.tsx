@@ -9,7 +9,7 @@ const Header = lazy(() => import('@components/header'))
 const Router = () => {
     const { username } = useUserContext()
 
-    return <div>
+    return <div className={'h-screen'}>
         <Toaster />
         <Suspense fallback={<div className={'flex w-screen bg-gray-800 p-9'}/>}>
             <Header />
