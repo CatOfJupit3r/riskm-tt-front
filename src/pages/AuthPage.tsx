@@ -2,7 +2,7 @@ import { Input } from '@components/ui/input'
 import { useCallback, useEffect, useState } from 'react'
 import { useUserContext } from '@context/UserContext'
 import { Button } from '@components/ui/button'
-import { useToast } from '@components/ui/use-toast'
+import { useToast } from '@hooks/useToast'
 
 const AuthPage = () => {
     const [username, setUsername] = useState('')
