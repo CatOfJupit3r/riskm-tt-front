@@ -1,9 +1,10 @@
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
 import { Category, Risk } from '@models/API'
+import APIService from '@services/APIService'
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
 
 interface TableViewContextType {
-    data: Array<Risk | Category>
-    totalQuery: number
+    risks: Array<Risk>
+    categories: Array<Category>
 
     nameFilter: string | null
     descriptionFilter: string | null
@@ -19,15 +20,17 @@ interface TableViewContextType {
     changeTable: (table: 'risks' | 'categories') => void
     changeOnlyUnresolved: (onlyResolver: boolean) => void
     changeMaxRows: (maxRows: number) => void
-    changeData: (data: Array<Risk | Category>) => void
-    changeTotalQuery: (totalQuery: number) => void
+
+    fetchRisks: () => Promise<void>
+    fetchCategories: () => Promise<void>
 }
 
 const TableViewContext = createContext<TableViewContextType | undefined>(undefined)
 
 export const TableViewContextProvider = ({ children }: { children: ReactNode }) => {
-    const [data, setData] = useState<Array<Risk | Category>>([])
-    const [totalQuery, setTotalQuery] = useState<number>(0)
+    const [risks, setRisks] = useState<Array<Risk>>([])
+    const [categories, setCategories] = useState<Array<Category>>([])
+
     const [nameFilter, setNameFilter] = useState<string | null>(null)
     const [descriptionFilter, setDescriptionFilter] = useState<string | null>(null)
     const [maxRows, setMaxRows] = useState<number>(10)
@@ -72,39 +75,44 @@ export const TableViewContextProvider = ({ children }: { children: ReactNode }) 
         [setMaxRows]
     )
 
-    const changeData = useCallback(
-        (data: Array<Risk | Category>) => {
-            setData(data)
-        },
-        [setData]
-    )
+    const fetchRisks = useCallback(async () => {
+        const response = await APIService.getRows('risks', 0, 10, nameFilter, descriptionFilter, onlyUnresolved)
+        if (response.success) {
+            setRisks(response.data.rows as Array<Risk>)
+        } else {
+            console.log('Failed to fetch data', response.error)
+        }
+    }, [nameFilter, descriptionFilter, onlyUnresolved])
 
-    const changeTotalQuery = useCallback(
-        (totalQuery: number) => {
-            setTotalQuery(totalQuery)
-        },
-        [setTotalQuery]
-    )
+    const fetchCategories = useCallback(async () => {
+        const response = await APIService.getRows('categories', 0, 10, nameFilter, descriptionFilter, onlyUnresolved)
+        if (response.success) {
+            setCategories(response.data.rows as Array<Category>)
+        } else {
+            console.log('Failed to fetch data', response.error)
+        }
+    }, [nameFilter, descriptionFilter, onlyUnresolved])
 
     return (
         <TableViewContext.Provider
             value={{
-                totalQuery,
-                data,
+                risks,
+                categories,
+
                 nameFilter,
                 descriptionFilter,
                 table,
                 onlyUnresolved,
                 maxRows,
 
-                changeTotalQuery,
-
                 changeFilter,
                 resetFilter,
                 changeTable,
                 changeOnlyUnresolved,
                 changeMaxRows,
-                changeData,
+
+                fetchRisks,
+                fetchCategories,
             }}
         >
             {children}

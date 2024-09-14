@@ -1,5 +1,5 @@
 import * as React from 'react'
-import { forwardRef } from 'react'
+import { forwardRef, useEffect, useState } from 'react'
 
 import { Button } from '@components/ui/button'
 import { cn } from '@lib/utils'
@@ -50,4 +50,37 @@ const InputWithClearButton = forwardRef<HTMLInputElement, InputWithClearButtonPr
 )
 InputWithClearButton.displayName = 'InputWithClearButton'
 
-export { Input, InputWithClearButton }
+interface DelayedInputProps extends InputWithClearButtonProps {
+    callback: (value: string) => void
+    delay?: number
+}
+
+const DelayedInputWithClearButton = forwardRef<HTMLInputElement, DelayedInputProps>(
+    ({ delay = 500, callback, ...props }, ref) => {
+        const [searchTerm, setSearchTerm] = useState('')
+
+        useEffect(() => {
+            if (searchTerm === '') {
+                callback(searchTerm)
+            } else {
+                const delayDebounceFn = setTimeout(() => {
+                    callback(searchTerm)
+                }, delay)
+                return () => clearTimeout(delayDebounceFn)
+            }
+        }, [searchTerm])
+
+        return (
+            <InputWithClearButton
+                ref={ref}
+                {...props}
+                value={searchTerm}
+                onClear={() => setSearchTerm('')}
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
+        )
+    }
+)
+DelayedInputWithClearButton.displayName = 'DelayedInputWithClearButton'
+
+export { Input, InputWithClearButton, DelayedInputWithClearButton }
