@@ -9,6 +9,7 @@
         "baseUrl" : "./src",
         "paths" : {
             "@components/*": ["./components/*"],
+            "@mocks/*": ["./mocks/*"],
             "@pages/*" : [
                 "./pages/*"
             ],
