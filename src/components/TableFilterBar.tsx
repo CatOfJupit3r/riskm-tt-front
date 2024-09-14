@@ -1,5 +1,5 @@
 import { Button } from '@components/ui/button'
-import { InputWithClearButton } from '@components/ui/input'
+import { DelayedInputWithClearButton } from '@components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@components/ui/select'
 import { Switch } from '@components/ui/switch'
 import { useTableViewContext } from '@context/TableViewContext'
@@ -49,18 +49,28 @@ const TableFilterBar = () => {
                 </SelectContent>
             </Select>
             <div className={'flex w-full gap-1 max-md:flex-col'}>
-                <InputWithClearButton
+                <DelayedInputWithClearButton
                     className={'w-full'}
                     placeholder={'Name...'}
                     value={nameFilter ?? ''}
-                    onChange={(e) => changeFilter('name', e.target.value)}
+                    callback={useCallback(
+                        (value) => {
+                            changeFilter('name', value)
+                        },
+                        [changeFilter]
+                    )}
                     onClear={() => resetFilter('name')}
                 />
-                <InputWithClearButton
+                <DelayedInputWithClearButton
                     className={'w-full'}
                     placeholder={'Description...'}
                     value={descriptionFilter ?? ''}
-                    onChange={(e) => changeFilter('description', e.target.value)}
+                    callback={useCallback(
+                        (value) => {
+                            changeFilter('description', value)
+                        },
+                        [changeFilter]
+                    )}
                     onClear={() => resetFilter('description')}
                 />
             </div>
