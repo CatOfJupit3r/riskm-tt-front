@@ -9,11 +9,15 @@
         "baseUrl" : "./src",
         "paths" : {
             "@components/*": ["./components/*"],
+            "@mocks/*": ["./mocks/*"],
             "@pages/*" : [
                 "./pages/*"
             ],
             "@lib/*" : [
                 "./lib/*"
+            ],
+            "@hooks/*" : [
+                "./hooks/*"
             ],
             "@services/*" : [
                 "./services/*"
