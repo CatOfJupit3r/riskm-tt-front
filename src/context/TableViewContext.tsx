@@ -1,23 +1,36 @@
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react'
+import { Category, Risk } from '@models/API'
 
 interface TableViewContextType {
+    data: Array<Risk | Category>
+    totalQuery: number
+
     nameFilter: string | null
     descriptionFilter: string | null
+
     table: 'risks' | 'categories'
     onlyUnresolved: boolean
+    maxRows: number
 
     changeFilter(type: 'name' | 'description', filter: string): void
+
     resetFilter: (type: 'name' | 'description') => void
 
-    changeOnlyUnresolved: (onlyResolver: boolean) => void
     changeTable: (table: 'risks' | 'categories') => void
+    changeOnlyUnresolved: (onlyResolver: boolean) => void
+    changeMaxRows: (maxRows: number) => void
+    changeData: (data: Array<Risk | Category>) => void
+    changeTotalQuery: (totalQuery: number) => void
 }
 
 const TableViewContext = createContext<TableViewContextType | undefined>(undefined)
 
 export const TableViewContextProvider = ({ children }: { children: ReactNode }) => {
+    const [data, setData] = useState<Array<Risk | Category>>([])
+    const [totalQuery, setTotalQuery] = useState<number>(0)
     const [nameFilter, setNameFilter] = useState<string | null>(null)
     const [descriptionFilter, setDescriptionFilter] = useState<string | null>(null)
+    const [maxRows, setMaxRows] = useState<number>(10)
 
     const [table, setTable] = useState<'risks' | 'categories'>('risks')
     const [onlyUnresolved, setOnlyUnresolved] = useState<boolean>(false)
@@ -52,17 +65,46 @@ export const TableViewContextProvider = ({ children }: { children: ReactNode }) 
         [setOnlyUnresolved]
     )
 
+    const changeMaxRows = useCallback(
+        (maxRows: number) => {
+            setMaxRows(maxRows)
+        },
+        [setMaxRows]
+    )
+
+    const changeData = useCallback(
+        (data: Array<Risk | Category>) => {
+            setData(data)
+        },
+        [setData]
+    )
+
+    const changeTotalQuery = useCallback(
+        (totalQuery: number) => {
+            setTotalQuery(totalQuery)
+        },
+        [setTotalQuery]
+    )
+
     return (
         <TableViewContext.Provider
             value={{
+                totalQuery,
+                data,
                 nameFilter,
                 descriptionFilter,
-                onlyUnresolved,
                 table,
+                onlyUnresolved,
+                maxRows,
+
+                changeTotalQuery,
+
                 changeFilter,
                 resetFilter,
                 changeTable,
                 changeOnlyUnresolved,
+                changeMaxRows,
+                changeData,
             }}
         >
             {children}
