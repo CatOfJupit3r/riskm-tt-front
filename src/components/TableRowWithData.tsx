@@ -12,14 +12,14 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
 
     return (
         <TableRow>
-            <TableCell className={'flex max-w-2xl items-center break-words'}>
+            <TableCell className={'flex h-full w-36 items-center break-words max-md:w-auto'}>
                 <Highlighter
                     searchWords={[nameFilter || '']}
                     textToHighlight={input.name}
                     highlightClassName={'bg-primary text-white'}
                 />
             </TableCell>
-            <TableCell className={'break-all'}>
+            <TableCell className={'break-words text-justify'}>
                 <Highlighter
                     searchWords={[descriptionFilter || '']}
                     textToHighlight={input.description}
@@ -34,7 +34,8 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                     {input.resolved ? 'Resolved' : 'Unresolved'}
                 </Badge>
             </TableCell>
-            <TableCell className={'break-all'}>{input.createdBy}</TableCell>
+            <TableCell className={'w-28 break-all'}>{input.categoryId}</TableCell>
+            <TableCell className={'w-36 break-all'}>{input.createdBy}</TableCell>
             <TableCell>
                 <Button variant={'destructiveGhost'} size={'icon'} className={'border-primary'}>
                     <IoTrashBinOutline />
@@ -55,6 +56,9 @@ export const PseudoRiskRowInTable = ({ pulsating }: { pulsating?: boolean }) => 
             </TableCell>
             <TableCell>
                 <Skeleton pulsating={pulsating} className={'h-10 w-20'} />
+            </TableCell>
+            <TableCell>
+                <Skeleton pulsating={pulsating} className={'h-10 w-40'} />
             </TableCell>
             <TableCell>
                 <Skeleton pulsating={pulsating} className={'h-10 w-40'} />

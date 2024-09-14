@@ -5,8 +5,16 @@ import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
 
 const TablePagination = ({ page, setPage }: { page: number; setPage: Dispatch<SetStateAction<number>> }) => {
-    const { table, maxRows, totalQuery } = useTableViewContext()
-    const maxPages = useMemo(() => (totalQuery ? Math.floor(Math.max(totalQuery / maxRows, 1)): 1), [totalQuery, maxRows])
+    const { table, maxRows, risks, categories } = useTableViewContext()
+    const maxPages = useMemo(() => {
+        if (table === 'risks') {
+            const totalQuery = risks.length
+            return totalQuery ? Math.floor(Math.max(totalQuery / maxRows, 1)) : 1
+        } else {
+            const totalQuery = categories.length
+            return totalQuery ? Math.floor(Math.max(totalQuery / maxRows, 1)) : 1
+        }
+    }, [risks, categories, maxRows])
 
     useEffect(() => {
         setPage(1)
@@ -26,10 +34,6 @@ const TablePagination = ({ page, setPage }: { page: number; setPage: Dispatch<Se
                         variant={'ghost'}
                         onClick={() => {
                             setPage(1)
-                            scroll({
-                                top: 0,
-                                behavior: 'smooth',
-                            })
                         }}
                         disabled={page === 1}
                     >
@@ -55,10 +59,6 @@ const TablePagination = ({ page, setPage }: { page: number; setPage: Dispatch<Se
                         variant={'ghost'}
                         onClick={() => {
                             setPage((prev) => prev + 1)
-                            scroll({
-                                top: 0,
-                                behavior: 'smooth',
-                            })
                         }}
                         disabled={page === maxPages}
                     >
@@ -70,10 +70,6 @@ const TablePagination = ({ page, setPage }: { page: number; setPage: Dispatch<Se
                         variant={'ghost'}
                         onClick={() => {
                             setPage(maxPages)
-                            scroll({
-                                top: 0,
-                                behavior: 'smooth',
-                            })
                         }}
                         disabled={page === maxPages}
                     >

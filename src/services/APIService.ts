@@ -48,7 +48,7 @@ class APIService {
             return {
                 success: true,
                 data: {
-                    rows: rows.slice(begin, end),
+                    rows: rows,
                     total: rows.length,
                 },
             }
