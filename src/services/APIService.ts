@@ -1,62 +1,82 @@
-import mocks from '@mocks/test.json'
-import { Category, Risk } from '@models/API'
-
-interface SUCCESS_RESPONSE<Requested = unknown> {
-    success: true
-    data: Requested
-}
-
-interface ERROR_RESPONSE {
-    success: false
-    error: Error | unknown
-}
-
-type RESPONSE<Requested = unknown> = SUCCESS_RESPONSE<Requested> | ERROR_RESPONSE
+import { ApolloClient, InMemoryCache } from '@apollo/client'
+import EventEmitter from 'events'
 
 class APIService {
-    public async getRows(
-        type: 'risks' | 'categories',
-        begin: number,
-        end: number,
-        nameFilter: string | null,
-        descriptionFilter: string | null,
-        onlyUnresolved?: boolean
-    ): Promise<
-        RESPONSE<{
-            rows: Array<typeof type extends 'risks' ? Risk : Category>
-            total: number
-        }>
-    > {
-        try {
-            // await new Promise((resolve) => setTimeout(resolve, 100000))
+    emitter = new EventEmitter()
 
-            let rows: Array<Risk> | Array<Category> =
-                type === 'risks'
-                    ? (mocks['risks'] as unknown as Array<Risk>)
-                    : (mocks['categories'] as unknown as Array<Category>)
+    eventTypes = {
+        LOGIN_STATUS_CHANGED: 'LOGIN_STATUS_CHANGED',
+        LOGIN: 'LOGIN',
+        LOGOUT: 'LOGOUT',
+    }
 
-            if (nameFilter) {
-                rows = rows.filter((row) => row.name.includes(nameFilter))
-            }
-            if (descriptionFilter) {
-                rows = rows.filter((row) => row.description.includes(descriptionFilter))
-            }
-            if (onlyUnresolved && type === 'risks') {
-                rows = rows.filter((row) => !(row as unknown as Risk)?.resolved)
-            }
+    public username: string | null = null
+    public client: ApolloClient<unknown>
 
-            return {
-                success: true,
-                data: {
-                    rows: rows,
-                    total: rows.length,
-                },
-            }
-        } catch (error) {
-            return {
-                success: false,
-                error,
-            }
+    constructor() {
+        this.client = new ApolloClient({
+            uri: process.env.REACT_APP_BACKEND_URL,
+            cache: new InMemoryCache({
+            })
+        })
+        this.username = this.getUsernameStorage()
+    }
+
+    private getUsernameStorage(): string | null {
+        return localStorage.getItem('username')
+    }
+
+    private setUsernameStorage(username: string) {
+        localStorage.setItem('username', username)
+    }
+
+    public getHeaders = (): Record<string, string> => {
+        const headers: Record<string, string> = {}
+        if (this.username) {
+            headers['Authorization'] = this.username
+        }
+        return headers
+    }
+
+    public isLoggedIn() {
+        const token = this.getUsernameStorage()
+        return !!token
+    }
+
+    public login({ username }: { username: string }) {
+        this.username = username
+        this.setUsernameStorage(username)
+
+        this.client = new ApolloClient({
+            uri: process.env.REACT_APP_BACKEND_URL,
+            cache: new InMemoryCache(),
+            headers: this.getHeaders(),
+        })
+
+        this.emitter.emit(this.eventTypes.LOGIN_STATUS_CHANGED, true)
+        this.emitter.emit(this.eventTypes.LOGIN)
+    }
+
+    public logout() {
+        localStorage.removeItem('username')
+
+        this.emitter.emit(this.eventTypes.LOGIN_STATUS_CHANGED, false)
+        this.emitter.emit(this.eventTypes.LOGOUT)
+    }
+
+    public onLoginStatusChange(cb: (isLoggedIn: boolean) => void): () => void {
+        this.emitter.on(this.eventTypes.LOGIN_STATUS_CHANGED, cb)
+
+        return () => {
+            this.emitter.off(this.eventTypes.LOGIN_STATUS_CHANGED, cb)
+        }
+    }
+
+    public onLogin(cb: (isLoggedIn: boolean) => void): () => void {
+        this.emitter.on(this.eventTypes.LOGIN, cb)
+
+        return () => {
+            this.emitter.off(this.eventTypes.LOGIN, cb)
         }
     }
 }

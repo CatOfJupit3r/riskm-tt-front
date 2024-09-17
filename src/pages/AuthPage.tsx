@@ -1,27 +1,12 @@
 import { Input } from '@components/ui/input'
-import { useCallback, useEffect, useState } from 'react'
-import { useUserContext } from '@context/UserContext'
+import { useState } from 'react'
 import { Button } from '@components/ui/button'
 import { useToast } from '@hooks/useToast'
+import APIService from '@services/APIService'
 
 const AuthPage = () => {
     const [username, setUsername] = useState('')
     const { toast } = useToast()
-    const { changeUsername } = useUserContext()
-
-    const setUsernameFromStorage = useCallback(
-        () => {
-            const usernameInStorage = localStorage.getItem('username')
-            if (usernameInStorage && usernameInStorage !== username && usernameInStorage.length > 0) {
-                setUsername(usernameInStorage)
-                localStorage.removeItem('username')
-            }
-        }, [username],
-    )
-
-    useEffect(() => {
-        setUsernameFromStorage()
-    }, [])
 
     return (
         <div className={'flex w-full justify-center'}>
@@ -47,8 +32,7 @@ const AuthPage = () => {
                             })
                             return
                         }
-                        changeUsername(username)
-                        localStorage.setItem('username', username)
+                        APIService.login({ username })
                     }}
                     disabled={username.length === 0}
                 >

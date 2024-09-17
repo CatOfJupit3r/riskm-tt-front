@@ -1,30 +1,38 @@
 import { Button } from '@components/ui/button'
 import { Pagination, PaginationContent, PaginationItem } from '@components/ui/pagination'
-import { useTableViewContext } from '@context/TableViewContext'
+import { useFiltersContext } from '@context/FiltersContext'
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
+import { Skeleton } from '@components/ui/skeleton'
 
-const TablePagination = ({ page, setPage }: { page: number; setPage: Dispatch<SetStateAction<number>> }) => {
-    const { table, maxRows, risks, categories } = useTableViewContext()
+const calculateMaxPages = (total: number, maxRows: number) => {
+    return total ? Math.ceil(Math.max(total / maxRows, 1)) : 1
+}
+
+const PaginationInTable = ({
+    page,
+    setPage,
+    total,
+}: {
+    page: number
+    setPage: Dispatch<SetStateAction<number>>
+    total: number | null
+}) => {
+    const { filters } = useFiltersContext()
+    const { table, maxRows } = filters
+
     const maxPages = useMemo(() => {
-        if (table === 'risks') {
-            const totalQuery = risks.length
-            return totalQuery ? Math.floor(Math.max(totalQuery / maxRows, 1)) : 1
-        } else {
-            const totalQuery = categories.length
-            return totalQuery ? Math.floor(Math.max(totalQuery / maxRows, 1)) : 1
+        return calculateMaxPages(total ?? 1, maxRows)
+    }, [table, total, maxRows])
+
+    useEffect(() => {
+        if (total === null) { // this is a loading state
+            return
         }
-    }, [risks, categories, maxRows])
-
-    useEffect(() => {
-        setPage(1)
-    }, [table])
-
-    useEffect(() => {
         if (page > maxPages) {
             setPage(maxPages)
         }
-    }, [page, maxPages])
+    }, [page, maxPages, total])
 
     return (
         <Pagination>
@@ -81,4 +89,4 @@ const TablePagination = ({ page, setPage }: { page: number; setPage: Dispatch<Se
     )
 }
 
-export default TablePagination
+export default PaginationInTable
