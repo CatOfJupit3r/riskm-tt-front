@@ -24,7 +24,7 @@ import {
 } from '@hooks/useGraphQLMutations'
 import { useToast } from '@hooks/useToast'
 import { Category, Risk } from '@models/API'
-import { ReactNode, useEffect, useState } from 'react'
+import { ReactNode, useState } from 'react'
 import Highlighter from 'react-highlight-words'
 import { IoTrashBinOutline } from 'react-icons/io5'
 
@@ -229,7 +229,7 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                             if (!data || !data.updateRisk) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while updating the risk',
+                                    description: <ErrorHandlingRisk name={input.name} operation={'updating'} />,
                                 })
                                 return
                             }
@@ -244,9 +244,10 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingRisk name={input.name} operation={'updating'} />,
                             })
                         })
                 }}
@@ -266,7 +267,7 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                             if (!data || !data.updateRisk) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while updating the risk',
+                                    description: <ErrorHandlingRisk name={input.name} operation={'updating'} />,
                                 })
                                 return
                             }
@@ -281,9 +282,10 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingRisk name={input.name} operation={'updating'} />,
                             })
                         })
                 }}
@@ -300,7 +302,7 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                             if (!data || !data.changeRiskStatus) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while updating the risk status',
+                                    description: <ErrorHandlingRisk name={input.name} operation={'status'} />,
                                 })
                                 return
                             }
@@ -308,22 +310,24 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                                 title: 'Risk status updated',
                                 description: (
                                     <p>
-                                        Status of risk <strong>{input.name}</strong> has been updated successfully
+                                        <strong>{input.name}</strong> has been marked as{' '}
+                                        <strong>{data.changeRiskStatus.resolved ? 'resolved' : 'unresolved'}</strong>
                                     </p>
                                 ),
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingRisk name={input.name} operation={'status'} />,
                             })
                         })
                 }}
             >
                 <Badge
                     variant={input.resolved ? 'default' : 'destructive'}
-                    className={'flex w-20 items-center justify-center text-xs transition-colors cursor-pointer'}
+                    className={'flex w-20 cursor-pointer items-center justify-center text-xs transition-colors'}
                 >
                     {input.resolved ? 'Resolved' : 'Unresolved'}
                 </Badge>
@@ -341,19 +345,24 @@ export const RiskRowInTable = ({ input }: { input: Risk }) => {
                             if (!data || !data.removeRisk) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while deleting the risk',
+                                    description: <ErrorHandlingRisk name={input.name} operation={'removing'} />,
                                 })
                                 return
                             }
                             toast({
                                 title: 'Risk deleted',
-                                description: `Risk ${input.name} has been deleted successfully`,
+                                description: (
+                                    <p>
+                                        Risk <strong>{input.name}</strong> has been deleted successfully
+                                    </p>
+                                ),
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingRisk name={input.name} operation={'removing'} />,
                             })
                         })
                 }}
@@ -416,19 +425,25 @@ export const CategoryRowInTable = ({ input }: { input: Category }) => {
                             if (!data || !data.updateCategory) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while updating the risk',
+                                    description: <ErrorHandlingCategory name={input.name} operation={'updating'} />,
                                 })
                                 return
                             }
                             toast({
-                                title: 'Risk updated',
-                                description: `Risk ${input.name} has been updated successfully to ${data.updateCategory.name}`,
+                                title: 'Category updated',
+                                description: (
+                                    <p>
+                                        Category <strong>{input.name}</strong> has been updated successfully to{' '}
+                                        <strong>{data.updateCategory.name}</strong>
+                                    </p>
+                                ),
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingCategory name={input.name} operation={'updating'} />,
                             })
                         })
                 }}
@@ -447,19 +462,25 @@ export const CategoryRowInTable = ({ input }: { input: Category }) => {
                             if (!data || !data.updateCategory) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while updating the risk',
+                                    description: <ErrorHandlingCategory name={input.name} operation={'updating'} />,
                                 })
                                 return
                             }
                             toast({
-                                title: 'Risk updated',
-                                description: `Description of ${input.name} was changed to: ${data.updateCategory.description}`,
+                                title: 'Category updated',
+                                description: (
+                                    <p>
+                                        Description of <strong>{input.name}</strong> was changed to:{' '}
+                                        <strong>{data.updateCategory.description}</strong>
+                                    </p>
+                                ),
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingCategory name={input.name} operation={'updating'} />,
                             })
                         })
                 }}
@@ -477,19 +498,24 @@ export const CategoryRowInTable = ({ input }: { input: Category }) => {
                             if (!data || !data.removeCategory) {
                                 errorToast({
                                     title: 'Error',
-                                    description: 'An error occurred while deleting the category',
+                                    description: <ErrorHandlingCategory name={input.name} operation={'removing'} />,
                                 })
                                 return
                             }
                             toast({
                                 title: 'Category deleted',
-                                description: `Category ${input.name} has been deleted successfully`,
+                                description: (
+                                    <p>
+                                        Category <strong>{input.name}</strong> has been removed successfully
+                                    </p>
+                                ),
                             })
                         })
                         .catch((error) => {
+                            console.log(error)
                             errorToast({
                                 title: 'Error',
-                                description: error.message,
+                                description: <ErrorHandlingCategory name={input.name} operation={'removing'} />,
                             })
                         })
                 }}
@@ -499,8 +525,7 @@ export const CategoryRowInTable = ({ input }: { input: Category }) => {
                     <p>This action cannot be undone. This will permanently delete the category with the name</p>
                     <br />
                     <p>
-                        You are about to delete the category with the name{' '}
-                        <span className={'font-bold'}>{input.name}</span>
+                        You are about to delete the category with the name <strong>{input.name}</strong>
                     </p>
                 </AlertDialogDescription>
             </RemoveDataAlertDialog>
@@ -525,4 +550,45 @@ export const PseudoCategoryRowInTable = ({ pulsating }: { pulsating?: boolean })
             </TableCell>
         </TableRow>
     )
+}
+
+const ErrorHandlingData = ({
+    name,
+    type,
+    operation,
+}: {
+    name: string
+    type: 'category' | 'risk'
+    operation: 'updating' | 'removing' | 'status'
+}) => {
+    switch (operation) {
+        case 'updating':
+            return (
+                <p>
+                    An error occurred while updating the {type} <strong>{name}</strong>
+                </p>
+            )
+        case 'removing':
+            return (
+                <p>
+                    An error occurred while removing the {type} <strong>{name}</strong>
+                </p>
+            )
+        case 'status':
+            return (
+                <p>
+                    An error occurred while updating the status of the {type} <strong>{name}</strong>
+                </p>
+            )
+        default:
+            return <>Unknown operation</>
+    }
+}
+
+const ErrorHandlingRisk = ({ name, operation }: { name: string; operation: 'updating' | 'removing' | 'status' }) => {
+    return <ErrorHandlingData name={name} type={'risk'} operation={operation} />
+}
+
+const ErrorHandlingCategory = ({ name, operation }: { name: string; operation: 'updating' | 'removing' }) => {
+    return <ErrorHandlingData name={name} type={'category'} operation={operation} />
 }

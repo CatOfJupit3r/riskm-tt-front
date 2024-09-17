@@ -1,4 +1,4 @@
-import { useQuery } from '@apollo/client'
+import { ApolloError, useQuery } from '@apollo/client'
 import { Button } from '@components/ui/button'
 import { InputWithClearButton } from '@components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger } from '@components/ui/select'
@@ -20,7 +20,7 @@ export const AddRiskInTable = () => {
         description: '',
         categoryId: null,
     })
-    const { toast } = useToast()
+    const { toast, errorToast } = useToast()
 
     const [addRisk, { loading: loadingMutation }] = useCreateRiskMutation()
     const { data: dataQuery, loading: loadingQuery, error: errorQuery } = useQuery(GetAllCategoriesQuery)
@@ -118,10 +118,9 @@ export const AddRiskInTable = () => {
                             })
                                 .then(({ data }) => {
                                     if (!data || data.createRisk === null) {
-                                        toast({
+                                        errorToast({
                                             title: 'Error',
-                                            description: 'Risk seems to not have been added for unknown reasons',
-                                            variant: 'destructive',
+                                            description: <p>Error adding risk {newRisk.name}. Please try again.</p>,
                                         })
                                         return
                                     }
@@ -133,15 +132,25 @@ export const AddRiskInTable = () => {
                                                 Risk <strong>{name}</strong> added successfully
                                             </p>
                                         ),
-                                        variant: 'default',
                                     })
                                 })
                                 .catch((error) => {
                                     console.log(error)
-                                    toast({
+                                    if (error instanceof ApolloError) {
+                                        errorToast({
+                                            title: 'Error',
+                                            description: (
+                                                <p>
+                                                    Error adding risk {newRisk.name}. Please try again.{' '}
+                                                    {error.message}
+                                                </p>
+                                            ),
+                                        })
+                                        return
+                                    }
+                                    errorToast({
                                         title: 'Error',
-                                        description: error?.message ?? 'Unknown error happened while adding risk',
-                                        variant: 'destructive',
+                                        description: <p>Error adding risk {newRisk.name}. Please try again.</p>,
                                     })
                                 })
                         }}
@@ -162,7 +171,7 @@ export const AddRiskInTable = () => {
 
 export const AddCategoryInTable = () => {
     const [newCategory, setNewCategory] = useState<CategoryInput>({ name: '', description: '' })
-    const { toast } = useToast()
+    const { toast, errorToast } = useToast()
 
     const [addCategory, { loading: loadingMutation }] = useCreateCategoryMutation()
 
@@ -218,10 +227,11 @@ export const AddCategoryInTable = () => {
                             })
                                 .then(({ data }) => {
                                     if (!data || data.createCategory === null) {
-                                        toast({
+                                        errorToast({
                                             title: 'Error',
-                                            description: 'Category not added for unknown reasons',
-                                            variant: 'destructive',
+                                            description: (
+                                                <p>Error adding category {newCategory.name}. Please try again.</p>
+                                            ),
                                         })
                                         return
                                     }
@@ -233,11 +243,21 @@ export const AddCategoryInTable = () => {
                                     })
                                 })
                                 .catch((error) => {
-                                    console.log(error)
-                                    toast({
+                                    if (error instanceof ApolloError) {
+                                        errorToast({
+                                            title: 'Error',
+                                            description: (
+                                                <p>
+                                                    Error adding category {newCategory.name}. Please try again.{' '}
+                                                    {error.message}
+                                                </p>
+                                            ),
+                                        })
+                                        return
+                                    }
+                                    errorToast({
                                         title: 'Error',
-                                        description: error?.message ?? 'Unknown error happened while adding category',
-                                        variant: 'destructive',
+                                        description: <p>Error adding category {newCategory.name}. Please try again.</p>,
                                     })
                                 })
                         }}
