@@ -83,4 +83,4 @@ const DelayedInputWithClearButton = forwardRef<HTMLInputElement, DelayedInputPro
 )
 DelayedInputWithClearButton.displayName = 'DelayedInputWithClearButton'
 
-export { Input, InputWithClearButton, DelayedInputWithClearButton }
+export { DelayedInputWithClearButton, Input, InputWithClearButton }

@@ -2,12 +2,23 @@ export interface Risk {
     _id: string
     name: string
     description: string
-    categoryId: string
+    category: Category
     resolved: boolean
 
     createdBy: string
-    createdAt: string // date-like
-    updatedAt: string // date-like
+    // createdAt: string // date-like
+    // updatedAt: string // date-like
+}
+
+export interface RiskInput {
+    name: string
+    description: string
+    categoryId: string | null
+}
+
+export interface CategoryInput {
+    name: string
+    description: string
 }
 
 export interface Category {
@@ -16,6 +27,6 @@ export interface Category {
     description: string
 
     createdBy: string
-    createdAt: string // date-like
-    updatedAt: string // date-like
+    // createdAt: string // date-like
+    // updatedAt: string // date-like
 }
