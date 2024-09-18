@@ -3,7 +3,6 @@ import { Pagination, PaginationContent, PaginationItem } from '@components/ui/pa
 import { useFiltersContext } from '@context/FiltersContext'
 import { Dispatch, SetStateAction, useEffect, useMemo } from 'react'
 import { MdKeyboardDoubleArrowLeft, MdKeyboardDoubleArrowRight, MdNavigateBefore, MdNavigateNext } from 'react-icons/md'
-import { Skeleton } from '@components/ui/skeleton'
 
 const calculateMaxPages = (total: number, maxRows: number) => {
     return total ? Math.ceil(Math.max(total / maxRows, 1)) : 1
