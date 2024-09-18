@@ -195,8 +195,9 @@ const RiskAndCategoriesView = () => {
                                     <PseudoCategoryRowInTable key={0} />
                                 </Duplicate>
                             ) : (
-                                categoriesData?.categories.filtered
-                                    .map((input, index) => <CategoryRowInTable key={index} input={input as Category} />)
+                                categoriesData?.categories.filtered.map((input, index) => (
+                                    <CategoryRowInTable key={index} input={input as Category} />
+                                ))
                             )}
                         </>
                     ) : (
@@ -207,11 +208,12 @@ const RiskAndCategoriesView = () => {
                                 </Duplicate>
                             ) : risksError ? (
                                 <Duplicate times={page === 1 ? 10 : maxRows}>
-                                    <PseudoCategoryRowInTable key={0} />
+                                    <PseudoRiskRowInTable key={0} />
                                 </Duplicate>
                             ) : (
-                                risksData?.risks.filtered
-                                    .map((input, index) => <RiskRowInTable key={index} input={input as Risk} />)
+                                risksData?.risks.filtered.map((input, index) => (
+                                    <RiskRowInTable key={index} input={input as Risk} />
+                                ))
                             )}
                         </>
                     )}
