@@ -7,13 +7,7 @@ const Header = () => {
 
     return (
         <header className={'flex w-full flex-row items-center justify-between bg-gray-800 p-4 text-white'}>
-            <img
-                src={
-                    'https://cdn.discordapp.com/attachments/1035558785051275265/1284198502565417041/1284198376111472690.webp?ex=66e9b70e&is=66e8658e&hm=b531710a01192c823346a446115ea4964c1f03318f4dc58835aff194c5eb41ab&'
-                }
-                alt={'logo'}
-                className={'size-10'}
-            />
+            <img src={'hampter.webp'} alt={'logo'} className={'size-10'} />
             {isLoggedIn ? (
                 <div className={'flex flex-row items-center gap-4'}>
                     <p className={'text-lg'}>@{APIService.username}</p>
