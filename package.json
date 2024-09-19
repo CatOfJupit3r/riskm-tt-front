@@ -2,7 +2,7 @@
     "name": "riskm-tt-front",
     "version": "0.1.0",
     "private": true,
-    "engines" : {
+    "engines": {
         "node": ">=20.0.0"
     },
     "dependencies": {
@@ -24,6 +24,7 @@
         "@types/react": "^18.3.5",
         "@types/react-dom": "^18.3.0",
         "@types/react-highlight-words": "^0.20.0",
+        "@typescript-eslint/eslint-plugin": "^8.6.0",
         "class-variance-authority": "^0.7.0",
         "clsx": "^2.1.1",
         "customize-cra": "^1.0.0",
