@@ -1,5 +1,6 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { EventEmitter } from 'events'
+import * as process from 'node:process'
 
 class APIService {
     emitter = new EventEmitter()
@@ -15,7 +16,7 @@ class APIService {
 
     constructor() {
         this.client = new ApolloClient({
-            uri: import.meta.env.VITE_BACKEND_URL,
+            uri: process.env.REACT_APP_BACKEND_URL,
             cache: new InMemoryCache({}),
         })
         this.username = this.getUsernameStorage()

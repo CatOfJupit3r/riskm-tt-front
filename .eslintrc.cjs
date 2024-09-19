@@ -42,6 +42,7 @@ module.exports = {
         ],
         'no-extra-semi': 'warn',
     },
+    ignorePatterns: ['config-overrides.js'],
     settings: {
         "react": {
             "version": "detect"
