@@ -3,6 +3,10 @@
     "version": "0.1.0",
     "private": true,
     "type": "module",
+    "engines" : {
+        "node": ">=20.0.0",
+        "npm": ">=10.0.0"
+    },
     "dependencies": {
         "@apollo/client": "^3.11.8",
         "@radix-ui/react-alert-dialog": "^1.1.1",
