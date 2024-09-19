@@ -15,9 +15,8 @@ class APIService {
 
     constructor() {
         this.client = new ApolloClient({
-            uri: process.env.REACT_APP_BACKEND_URL,
-            cache: new InMemoryCache({
-            })
+            uri: import.meta.env.VITE_BACKEND_URL,
+            cache: new InMemoryCache({}),
         })
         this.username = this.getUsernameStorage()
     }
@@ -46,12 +45,6 @@ class APIService {
     public login({ username }: { username: string }) {
         this.username = username
         this.setUsernameStorage(username)
-
-        this.client = new ApolloClient({
-            uri: process.env.REACT_APP_BACKEND_URL,
-            cache: new InMemoryCache(),
-            headers: this.getHeaders(),
-        })
 
         this.emitter.emit(this.eventTypes.LOGIN_STATUS_CHANGED, true)
         this.emitter.emit(this.eventTypes.LOGIN)
