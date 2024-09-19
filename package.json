@@ -50,6 +50,7 @@
     "scripts": {
         "start": "react-app-rewired --max-old-space-size=512 start",
         "build": "react-app-rewired build",
+        "serve": "npx serve -s build",
         "test": "react-app-rewired test",
         "eject": "react-scripts eject",
         "pretty": "prettier --write .",
