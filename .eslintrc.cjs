@@ -30,6 +30,8 @@ module.exports = {
         '@typescript-eslint/no-explicit-any': 'warn',
         'react/react-in-jsx-scope': 'off',
         '@typescript-eslint/no-empty-interface': 'off',
+        "@typescript-eslint/no-empty-object-type": "off",
+        "@typescript-eslint/no-unused-expressions": "off",
         '@typescript-eslint/no-unused-vars': [
             'warn',
             {
@@ -39,7 +41,6 @@ module.exports = {
             },
         ],
         'no-extra-semi': 'warn',
-        '@typescript-eslint/no-extra-semi': 'warn',
     },
     settings: {
         "react": {

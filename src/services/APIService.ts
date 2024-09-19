@@ -1,5 +1,5 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
-import EventEmitter from 'events'
+import { EventEmitter } from 'events'
 
 class APIService {
     emitter = new EventEmitter()

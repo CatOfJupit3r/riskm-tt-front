@@ -122,8 +122,12 @@ const FiltersSelection = () => {
                 <Button
                     className={'flex h-full w-32 items-center gap-1 font-bold max-md:w-full'}
                     onClick={() => {
-                        tableInner === 'categories' ? setTableInner('risks') : setTableInner('categories')
-                        tableInner === 'risks' ? setIncludeResolvedInner(false) : null
+                        if (tableInner === 'risks') {
+                            setTableInner('categories')
+                            setIncludeResolvedInner(false)
+                        } else {
+                            setTableInner('risks')
+                        }
                     }}
                     variant={'secondary'}
                 >
