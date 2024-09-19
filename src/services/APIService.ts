@@ -14,6 +14,7 @@ class APIService {
     public client: ApolloClient<unknown>
 
     constructor() {
+        console.log('process.env.REACT_APP_BACKEND_URL', process.env.REACT_APP_BACKEND_URL)
         this.client = new ApolloClient({
             uri: process.env.REACT_APP_BACKEND_URL,
             cache: new InMemoryCache({}),
