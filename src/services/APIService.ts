@@ -1,6 +1,5 @@
 import { ApolloClient, InMemoryCache } from '@apollo/client'
 import { EventEmitter } from 'events'
-import * as process from 'node:process'
 
 class APIService {
     emitter = new EventEmitter()
