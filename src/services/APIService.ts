@@ -15,7 +15,7 @@ class APIService {
 
     constructor() {
         this.client = new ApolloClient({
-            uri: process.env.REACT_APP_BACKEND_URL,
+            uri: import.meta.env.VITE_BACKEND_URL,
             cache: new InMemoryCache({}),
         })
         this.username = this.getUsernameStorage()

@@ -1,2 +1,2 @@
-schema: 'src/graphql/schema.graphql'
+schema: 'backend-production-345c.up.railway.app'
 documents: '**/*.graphql'

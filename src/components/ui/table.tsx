@@ -4,7 +4,7 @@ import { TdHTMLAttributes, ThHTMLAttributes } from 'react'
 import { cn } from '@lib/utils'
 
 type TableProps = React.HTMLAttributes<HTMLTableElement> & {
-    divRef?: React.RefObject<HTMLDivElement>
+    divRef?: React.RefObject<HTMLDivElement | null>
 }
 
 const Table = React.forwardRef<HTMLTableElement, TableProps>(

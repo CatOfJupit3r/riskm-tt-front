@@ -24,7 +24,7 @@ This project is a frontend application for the Risk Management Solutions project
 The following environment variables are required for the application to run:
 
 ```dotenv
-REACT_APP_BACKEND_URL= /* URL of the backend API */
+VITE_BACKEND_URL= /* URL of the backend API */
 ```
 
 

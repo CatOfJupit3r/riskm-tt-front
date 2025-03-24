@@ -19,7 +19,7 @@ const RiskAndCategoriesView = () => {
     const { table, maxRows, includeResolved, name: nameFilter, description: descriptionFilter } = filters
     const [page, setPage] = useState(1)
     const [columnWidths, setColumnWidths] = useState<Array<number>>([])
-    const tableRef = useRef<HTMLTableElement>(null)
+    const tableRef = useRef<HTMLDivElement>(null)
     const externalHeaderRef = useRef<HTMLDivElement>(null)
 
     const {
